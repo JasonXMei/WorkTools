@@ -1,5 +1,6 @@
 package com.jason.util;
 
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,7 @@ public class ObjectMapperUtil {
 
     public static <T> Map<String, String> obj2Map(T obj) {
         try {
-            Map<String, Object> convertMap = OBJECT_MAPPER.readValue(JsonUtil.toJson(obj), Map.class);
+            Map<String, Object> convertMap = OBJECT_MAPPER.readValue(JSONUtil.toJsonStr(obj), Map.class);
             Map<String, String> result = new HashMap<>();
             for (Map.Entry<String, Object> entry : convertMap.entrySet()) {
                 String key = entry.getKey();

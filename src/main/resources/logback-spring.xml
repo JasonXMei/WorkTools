@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true">
+<configuration scan="true" debug="false">
 	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
-	<logger name="org.apache" level="WARN" />
-	<logger name="httpclient" level="WARN" />
 
 	<springProperty scope="context" name="springAppName" source="spring.application.name" />
 	<property name="LOG_FILE" value="logs/${springAppName}" />
@@ -67,29 +65,6 @@
 		<!--日志输出编码格式化 -->
 		<encoder>
 			<charset>UTF-8</charset>
-			<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-    <appender name="errorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>ERROR</level>
-			<onMatch>ACCEPT</onMatch>
-			<onMismatch>DENY</onMismatch>
-		</filter>
-        <!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则 如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
-			的日志改名为今天的日期。即，<File> 的日志都是当天的。 -->
-        <File>${LOG_FILE}.error1.log</File>
-		<!-- 日志文件的文件最大大小和文件总数目 -->
-		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">   
-	          <fileNamePattern>error_%i.txt</fileNamePattern>   
-			  <minIndex>1</minIndex>   
-			  <maxIndex>10</maxIndex>   
-	    </rollingPolicy>   
-	    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">   
-			  <maxFileSize>10MB</maxFileSize>   
-	    </triggeringPolicy>   
-		<encoder>
 			<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
 		</encoder>
 	</appender>

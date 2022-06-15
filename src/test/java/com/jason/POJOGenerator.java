@@ -22,7 +22,7 @@ public class POJOGenerator {
         gc.setOpen(false);
         gc.setFileOverride(true);
         gc.setActiveRecord(true);
-        gc.setEnableCache(true);// XML 二级缓存
+        gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(true);// XML columList
         
@@ -54,7 +54,7 @@ public class POJOGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
-        strategy.setInclude(new String[]{"user"});
+        strategy.setInclude(new String[]{"credential"});
         mpg.setStrategy(strategy);
         
         // 选择 freemarker 引擎需要指定如下加，注意 pom 依赖必须有！

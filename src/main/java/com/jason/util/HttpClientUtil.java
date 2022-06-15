@@ -1,6 +1,10 @@
 package com.jason.util;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.jason.constant.CommonConstant;
+import com.jason.dto.BaseDTO;
 import com.jason.enums.ResponseCodeEnum;
 import com.jason.exception.BusinessException;
 import org.apache.http.NameValuePair;
@@ -15,7 +19,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -190,16 +193,23 @@ public class HttpClientUtil {
                 }
 
                 if (StrUtil.isNotEmpty(content)) {
-                    return JsonUtil.toObject(content, respClazz);
+                    BaseDTO baseDTO = JSONUtil.toBean(content, BaseDTO.class);
+                    if (baseDTO.isOk()) {
+                        JSONObject contentJson = JSONUtil.parseObj(content);
+                        String body = contentJson.getStr(CommonConstant.API_BODY);
+                        return JSONUtil.toBean(body, respClazz);
+                    } else {
+                        throw new BusinessException(ResponseCodeEnum.BUSINESS_EXCEPTION, httpMethod.getURI() + " Response Error");
+                    }
                 } else {
                     return null;
                 }
             }
 
-            throw new BusinessException(ResponseCodeEnum.INTERNAL_SERVER_ERROR, "API Response Empty");
+            throw new BusinessException(ResponseCodeEnum.INTERNAL_SERVER_ERROR, httpMethod.getURI() + " Response Empty");
         } catch (IOException e) {
             logger.error("get response failed", e);
-            throw new BusinessException(ResponseCodeEnum.INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new BusinessException(ResponseCodeEnum.INTERNAL_SERVER_ERROR, "call " + httpMethod.getURI() + " failed, errorMsg: " + e.getMessage());
         } finally {
             release(httpResponse, httpClient);
         }

@@ -1,13 +1,19 @@
 package com.jason.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jason.dto.PageReqDTO;
+import com.jason.dto.RespDTO;
+import com.jason.dto.UserListDTO;
 import com.jason.entity.User;
+import com.jason.enums.ResponseCodeEnum;
 import com.jason.service.UserService;
-import com.jason.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -25,20 +31,38 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/get")
-    public String getUser(Integer id) {
-        return JsonUtil.toJson(userService.getById(id));
+    public RespDTO<User> getUser(Integer id) {
+        User user = userService.getById(id);
+        if (Objects.isNull(user)) {
+            return RespDTO.fail(ResponseCodeEnum.BAD_REQUEST, "cannot found user");
+        }
+        return RespDTO.success(user);
     }
 
     @PostMapping("/save")
-    public String saveUser(User user) {
-        userService.save(user);
-        return JsonUtil.toJson(user);
+    public RespDTO<Void> saveUser(@RequestBody List<User> user) {
+        userService.saveBatch(user);
+        return RespDTO.success(null);
     }
 
     @PostMapping("/update")
-    public String updateUser(@RequestBody User user) {
+    public RespDTO<User> updateUser(User user) {
         userService.updateById(user);
-        return JsonUtil.toJson(user);
+        return RespDTO.success(userService.getById(user.getId()));
+    }
+
+    @GetMapping("/list")
+    public RespDTO<UserListDTO> listUser(PageReqDTO pageReqDTO) {
+        IPage<User> userIPage = new Page<>(pageReqDTO.getCurrentPage(), pageReqDTO.getPageSize());
+        IPage<User> page = userService.page(userIPage);
+
+        UserListDTO userListDTO = UserListDTO.builder()
+                .pageNumber(page.getCurrent())
+                .totalPage(page.getPages())
+                .pageSize(page.getSize())
+                .user(page.getRecords())
+                .build();
+        return RespDTO.success(userListDTO);
     }
 
 }
