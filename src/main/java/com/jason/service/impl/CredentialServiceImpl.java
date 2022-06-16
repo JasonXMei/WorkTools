@@ -1,9 +1,9 @@
 package com.jason.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jason.entity.Credential;
 import com.jason.mapper.CredentialMapper;
 import com.jason.service.CredentialService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +25,5 @@ public class CredentialServiceImpl extends ServiceImpl<CredentialMapper, Credent
     public Credential getByParam(Credential credential) {
         return credentialMapper.getByParam(credential);
     }
+
 }

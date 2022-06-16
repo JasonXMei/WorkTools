@@ -1,7 +1,7 @@
 package com.jason.service;
 
-import com.jason.entity.Credential;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jason.entity.Credential;
 
 /**
  * <p>
@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CredentialService extends IService<Credential> {
 
     Credential getByParam(Credential credential);
+
 }

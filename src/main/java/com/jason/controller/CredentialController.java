@@ -15,6 +15,7 @@ import com.jason.entity.Credential;
 import com.jason.enums.ResponseCodeEnum;
 import com.jason.exception.BusinessException;
 import com.jason.service.CredentialService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,6 +44,7 @@ public class CredentialController {
     }
 
     @PostMapping("/upsert")
+    @Transactional
     public RespDTO<Credential> upsert(@RequestBody Credential credential) {
         credentialService.saveOrUpdate(credential);
         return RespDTO.success(credentialService.getById(credential.getId()));
