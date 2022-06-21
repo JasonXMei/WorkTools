@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *  服务类
  * </p>
  *
- * @author Jason
+ * @Author Jason
  * @since 2022-06-09
  */
 public interface UserService extends IService<User> {

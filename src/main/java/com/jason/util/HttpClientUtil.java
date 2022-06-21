@@ -1,10 +1,8 @@
 package com.jason.util;
 
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.jason.constant.CommonConstant;
-import com.jason.dto.BaseDTO;
 import com.jason.enums.ResponseCodeEnum;
 import com.jason.exception.BusinessException;
 import org.apache.http.NameValuePair;
@@ -37,13 +35,15 @@ import java.util.Map.Entry;
  * <p>
  * 构建httpClient实例的时候可手动禁止重试：
  * HttpClientBuilder.create().disableAutomaticRetries()
+ * @Author Jason
+ * @Date 2022/06/21
  */
 public class HttpClientUtil {
 
     private static final String ENCODING = "UTF-8";
-    // 设置连接超时时间，单位毫秒。
+    /** 设置连接超时时间，单位毫秒。 */
     private static final int CONNECT_TIMEOUT = 10000;
-    // 请求获取数据的超时时间(即响应时间)，单位毫秒。
+    /** 请求获取数据的超时时间(即响应时间)，单位毫秒。 */
     private static final int SOCKET_TIMEOUT = 10000;
     private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
             .setConnectTimeout(CONNECT_TIMEOUT)
@@ -52,7 +52,7 @@ public class HttpClientUtil {
 
     private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
-    public static <P, T> T get(String url, Map<String, String> headers, P p, Class<T> respClazz) {
+    public static <P, T> T get(String url, Map<String, String> headers, P p, TypeReference<T> respClazz) {
         Map<String, String> params = ObjectMapperUtil.obj2Map(p);
         printRequestMsg(url, headers, params);
 
@@ -64,7 +64,7 @@ public class HttpClientUtil {
         return getResponse(httpGet, respClazz);
     }
 
-    public static <P, T> T postForm(String url, Map<String, String> headers, P p, Class<T> respClazz) {
+    public static <P, T> T postForm(String url, Map<String, String> headers, P p, TypeReference<T> respClazz) {
         Map<String, String> params = ObjectMapperUtil.obj2Map(p);
         printRequestMsg(url, headers, params);
 
@@ -77,7 +77,7 @@ public class HttpClientUtil {
         return getResponse(httpPost, respClazz);
     }
 
-    public static <T> T postJson(String url, Map<String, String> headers, String params, Class<T> respClazz) {
+    public static <T> T postJson(String url, Map<String, String> headers, String params, TypeReference<T> respClazz) {
         printRequestMsg(url, headers, params);
 
         HttpPost httpPost = new HttpPost(url);
@@ -180,7 +180,7 @@ public class HttpClientUtil {
         }
     }
 
-    private static <T> T getResponse(HttpRequestBase httpMethod, Class<T> respClazz) {
+    private static <T> T getResponse(HttpRequestBase httpMethod, TypeReference<T> respClazz) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse httpResponse = null;
         try {
@@ -193,14 +193,7 @@ public class HttpClientUtil {
                 }
 
                 if (StrUtil.isNotEmpty(content)) {
-                    BaseDTO baseDTO = JSONUtil.toBean(content, BaseDTO.class);
-                    if (baseDTO.isOk()) {
-                        JSONObject contentJson = JSONUtil.parseObj(content);
-                        String body = contentJson.getStr(CommonConstant.API_BODY);
-                        return JSONUtil.toBean(body, respClazz);
-                    } else {
-                        throw new BusinessException(ResponseCodeEnum.BUSINESS_EXCEPTION, httpMethod.getURI() + " Response Error");
-                    }
+                    return JSONUtil.toBean(content, respClazz, true);
                 } else {
                     return null;
                 }

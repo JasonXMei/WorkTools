@@ -1,5 +1,6 @@
 package com.jason;
 
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.json.JSONUtil;
 import com.jason.constant.CommonConstant;
 import com.jason.dto.*;
@@ -24,15 +25,17 @@ public class HttpClientUtilTest {
         Credential credential = new Credential();
         credential.setAppId("Jason");
         credential.setAppSecret("123456");
-        TokenDTO tokenDTO = HttpClientUtil.postForm(baseUrl + "/credential/createToken", null, credential, TokenDTO.class);
-        header.put(CommonConstant.HEADER_KEY, tokenDTO.getToken());
+        RespDTO<TokenDTO> tokenDTO = HttpClientUtil.postForm(baseUrl + "/credential/createToken", null, credential, new TypeReference<RespDTO<TokenDTO>>() {
+        });
+        header.put(CommonConstant.HEADER_KEY, tokenDTO.getBody().getToken());
     }
 
 
     @Test
     public void getTest() {
         User user = User.builder().id(3L).build();
-        System.out.println(HttpClientUtil.get(baseUrl + "/user/get", header, user, User.class));
+        System.out.println(HttpClientUtil.get(baseUrl + "/user/get", header, user, new TypeReference<RespDTO<User>>() {
+        }));
     }
 
     @Test
@@ -42,7 +45,8 @@ public class HttpClientUtilTest {
                 .pageSize(10L)
                 .build();
 
-        System.out.println(HttpClientUtil.get(baseUrl + "/user/list", header, pageReqDTO, UserListDTO.class));
+        System.out.println(HttpClientUtil.get(baseUrl + "/user/list", header, pageReqDTO, new TypeReference<RespDTO<UserListDTO>>() {
+        }));
     }
 
     @Test
@@ -51,13 +55,15 @@ public class HttpClientUtilTest {
         users.add(User.builder().name("Jason").age(28).email("jason.mei@xgate.com").build());
         users.add(User.builder().name("Jason").age(28).email("jason.mei@xgate.com").build());
 
-        System.out.println(HttpClientUtil.postJson(baseUrl + "/user/save", header, JSONUtil.toJsonStr(users), BaseDTO.class));
+        System.out.println(HttpClientUtil.postJson(baseUrl + "/user/save", header, JSONUtil.toJsonStr(users), new TypeReference<RespDTO<User>>() {
+        }));
     }
 
     @Test
     public void updateTest() {
         User user = User.builder().name("Jason").age(28).email("jason.mei@xgate.com").id(3L).build();
-        System.out.println(HttpClientUtil.postForm(baseUrl + "/user/update", header, user, User.class));
+        System.out.println(HttpClientUtil.postForm(baseUrl + "/user/update", header, user, new TypeReference<RespDTO<User>>() {
+        }));
     }
 
 }

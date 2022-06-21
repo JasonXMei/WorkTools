@@ -28,7 +28,7 @@ import java.util.Map;
  *  前端控制器
  * </p>
  *
- * @author Jason
+ * @Author Jason
  * @since 2022-06-14
  */
 @RestController
@@ -44,7 +44,7 @@ public class CredentialController {
     }
 
     @PostMapping("/upsert")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public RespDTO<Credential> upsert(@RequestBody Credential credential) {
         credentialService.saveOrUpdate(credential);
         return RespDTO.success(credentialService.getById(credential.getId()));
@@ -58,7 +58,7 @@ public class CredentialController {
         } else {
             JWTSigner jwtSigner = JWTSignerUtil.createSigner(record.getArgorithm(), record.getSigner().getBytes());
 
-            Map<String, Object> padload = new HashMap<String, Object>() {
+            Map<String, Object> padload = new HashMap<String, Object>(5) {
                 {
                     put(JWTPayload.ISSUED_AT, DateUtil.currentSeconds()); // 签发时间
                     put(JWTPayload.NOT_BEFORE, DateUtil.currentSeconds()); // 生效时间

@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @Author Jason
+ * @Date 2022/06/21
+ */
 @Slf4j
 public class ObjectMapperUtil {
 
@@ -41,7 +45,7 @@ public class ObjectMapperUtil {
     public static <T> Map<String, String> obj2Map(T obj) {
         try {
             Map<String, Object> convertMap = OBJECT_MAPPER.readValue(JSONUtil.toJsonStr(obj), Map.class);
-            Map<String, String> result = new HashMap<>();
+            Map<String, String> result = new HashMap<>(convertMap.size());
             for (Map.Entry<String, Object> entry : convertMap.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();

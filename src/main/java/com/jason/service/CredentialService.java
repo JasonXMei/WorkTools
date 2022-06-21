@@ -8,11 +8,17 @@ import com.jason.entity.Credential;
  *  服务类
  * </p>
  *
- * @author Jason
+ * @Author Jason
  * @since 2022-06-14
  */
 public interface CredentialService extends IService<Credential> {
 
+    /**
+     * get data by param
+     *
+     * @param credential query object
+     * @return Credential result
+     */
     Credential getByParam(Credential credential);
 
 }

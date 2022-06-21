@@ -1,13 +1,33 @@
 package com.jason.enums;
 
+/**
+ * @Author Jason
+ */
 public enum ResponseCodeEnum {
 
+    /**
+     * Success
+     */
     OK(200, "Success"),
 
+    /**
+     * Bad Request
+     */
     BAD_REQUEST(400, "Bad Request"),
+
+    /**
+     * Unauthorized
+     */
     UNAUTHORIZED(401, "Unauthorized"),
+
+    /**
+     * Business Exception
+     */
     BUSINESS_EXCEPTION(403, "Business Exception"),
 
+    /**
+     * Internal Server Error
+     */
     INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
     private Integer code;

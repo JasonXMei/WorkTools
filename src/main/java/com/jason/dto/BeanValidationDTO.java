@@ -8,14 +8,18 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @Author Jason
+ * @Date 2022/06/21
+ */
 @Data
 public class BeanValidationDTO {
 
-    // 字符串不能为null,字符串trim()后也不能等于“”
+    /** 字符串不能为null,字符串trim()后也不能等于“” */
     @NotBlank
     private String notBlankStr;
 
-    // 不能为null，可以是空
+    /** 不能为null，可以是空 */
     @NotNull
     private String notNullStr;
 

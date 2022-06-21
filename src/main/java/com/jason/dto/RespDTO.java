@@ -6,11 +6,15 @@ import lombok.Data;
 
 import java.util.Objects;
 
+/**
+ * @Author Jason
+ * @Date 2022/06/21
+ */
 @Data
 @Builder
 public class RespDTO<T> {
 
-    private int code;
+    private Integer code;
     private String msg;
     private T body;
 

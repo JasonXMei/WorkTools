@@ -20,7 +20,7 @@ import java.util.Objects;
  *  前端控制器
  * </p>
  *
- * @author Jason
+ * @Author Jason
  * @since 2022-06-09
  */
 @RestController
@@ -53,8 +53,8 @@ public class UserController {
 
     @GetMapping("/list")
     public RespDTO<UserListDTO> listUser(PageReqDTO pageReqDTO) {
-        IPage<User> userIPage = new Page<>(pageReqDTO.getCurrentPage(), pageReqDTO.getPageSize());
-        IPage<User> page = userService.page(userIPage);
+        IPage<User> userPage = new Page<>(pageReqDTO.getCurrentPage(), pageReqDTO.getPageSize());
+        IPage<User> page = userService.page(userPage);
 
         UserListDTO userListDTO = UserListDTO.builder()
                 .pageNumber(page.getCurrent())

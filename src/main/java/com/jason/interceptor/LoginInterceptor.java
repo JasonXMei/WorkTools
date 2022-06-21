@@ -1,6 +1,7 @@
 package com.jason.interceptor;
 
 import cn.hutool.core.exceptions.ValidateException;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
@@ -20,6 +21,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @Author Jason
+ * @Date 2022/06/21
+ */
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
@@ -29,6 +34,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader(CommonConstant.HEADER_KEY);
+        if (StrUtil.isEmpty(token)) {
+            throw new BusinessException(ResponseCodeEnum.UNAUTHORIZED, "header token cannot be blank");
+        }
 
         JWT jwt = JWTUtil.parseToken(token);
         Object sub = jwt.getPayload(JWTPayload.SUBJECT);
