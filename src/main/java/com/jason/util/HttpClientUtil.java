@@ -181,7 +181,7 @@ public class HttpClientUtil {
     }
 
     private static <T> T getResponse(HttpRequestBase httpMethod, TypeReference<T> respClazz) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = getHttpClient();
         CloseableHttpResponse httpResponse = null;
         try {
             httpResponse = httpClient.execute(httpMethod);
@@ -207,6 +207,13 @@ public class HttpClientUtil {
             release(httpResponse, httpClient);
         }
 
+    }
+
+    private static CloseableHttpClient getHttpClient() {
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setRetryHandler(new HttpRetryStrategy(3, 5000L))
+                .build();
+        return httpClient;
     }
 
     private static void release(CloseableHttpResponse httpResponse, CloseableHttpClient httpClient) {
