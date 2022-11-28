@@ -65,4 +65,16 @@ public class UserController {
         return RespDTO.success(userListDTO);
     }
 
+    @GetMapping("/addAge")
+    public RespDTO<Void> addAge() {
+        userService.addAge(1);
+        return RespDTO.success(null);
+    }
+
+    @GetMapping("/testTransaction")
+    public RespDTO<Void> testTransaction() {
+        userService.testTransaction();
+        return RespDTO.success(null);
+    }
+
 }

@@ -44,6 +44,10 @@ public class ObjectMapperUtil {
 
     public static <T> Map<String, String> obj2Map(T obj) {
         try {
+            if (Objects.isNull(obj)) {
+                return new HashMap<>();
+            }
+
             Map<String, Object> convertMap = OBJECT_MAPPER.readValue(JSONUtil.toJsonStr(obj), Map.class);
             Map<String, String> result = new HashMap<>(convertMap.size());
             for (Map.Entry<String, Object> entry : convertMap.entrySet()) {

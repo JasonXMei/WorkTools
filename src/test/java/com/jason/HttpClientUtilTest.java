@@ -3,7 +3,10 @@ package com.jason;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.json.JSONUtil;
 import com.jason.constant.CommonConstant;
-import com.jason.dto.*;
+import com.jason.dto.PageReqDTO;
+import com.jason.dto.RespDTO;
+import com.jason.dto.TokenDTO;
+import com.jason.dto.UserListDTO;
 import com.jason.entity.Credential;
 import com.jason.entity.User;
 import com.jason.util.HttpClientUtil;
@@ -14,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class HttpClientUtilTest {
 
@@ -28,6 +34,33 @@ public class HttpClientUtilTest {
         RespDTO<TokenDTO> tokenDTO = HttpClientUtil.postForm(baseUrl + "/credential/createToken", null, credential, new TypeReference<RespDTO<TokenDTO>>() {
         });
         header.put(CommonConstant.HEADER_KEY, tokenDTO.getBody().getToken());
+    }
+
+    @Test
+    public void testTransaction() {
+        HttpClientUtil.get(baseUrl + "/user/testTransaction", header, null, new TypeReference<RespDTO<User>>() {
+        });
+    }
+
+    @Test
+    public void addAgeTest() throws InterruptedException {
+        ExecutorService threadPool = Executors.newFixedThreadPool(10);
+        for (int i=0;i<100;i++){
+            threadPool.submit(new Runnable() {
+                @Override
+                public void run() {
+                    HttpClientUtil.get(baseUrl + "/user/addAge", header, null, new TypeReference<RespDTO<User>>() {
+                    });
+                }
+            });
+        }
+
+        threadPool.shutdown();
+        System.out.println("pool shutdown: " + threadPool.isShutdown());
+        while (!threadPool.isTerminated()) {
+            threadPool.awaitTermination(1, TimeUnit.SECONDS);
+        }
+        System.out.println("all task complete");
     }
 
 
