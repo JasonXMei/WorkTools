@@ -1,5 +1,7 @@
 package com.jason.enums;
 
+import cn.hutool.http.HttpStatus;
+
 /**
  * @Author Jason
  */
@@ -24,6 +26,11 @@ public enum ResponseCodeEnum {
      * Business Exception
      */
     BUSINESS_EXCEPTION(403, "Business Exception"),
+
+    /**
+     * Method not support
+     */
+    HTTP_BAD_METHOD(HttpStatus.HTTP_BAD_METHOD, "Method Not allowed"),
 
     /**
      * Internal Server Error

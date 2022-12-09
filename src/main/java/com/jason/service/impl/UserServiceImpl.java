@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Objects;
 
 /**
  * <p>
@@ -54,5 +56,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         credentialService.saveOrUpdate(credential);
 
         throw new BusinessException(ResponseCodeEnum.INTERNAL_SERVER_ERROR, "system error");
+    }
+
+    @Override
+    public boolean existsEmail(String email) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", email);
+
+        User user = baseMapper.selectOne(queryWrapper);
+        if (Objects.nonNull(user)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Collection<User> findByEmail(String email) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", email);
+
+        return baseMapper.selectList(queryWrapper);
     }
 }

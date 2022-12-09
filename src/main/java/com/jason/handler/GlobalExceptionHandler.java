@@ -4,16 +4,15 @@ import com.jason.dto.RespDTO;
 import com.jason.enums.ResponseCodeEnum;
 import com.jason.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -31,17 +30,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public RespDTO<String> handleException(BusinessException e) {
+    public RespDTO<String> handleBusinessException(BusinessException e) {
         log.error(e.getMessage(), e);
         return RespDTO.fail(e.getResponseCode(), e.getMessage());
     }
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    // @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class, ConstraintViolationException.class})
     @ResponseBody
     public RespDTO<String> handleParameterVerificationException(Exception e) {
         log.error("handleParameterVerificationException has been invoked", e);
         return RespDTO.fail(ResponseCodeEnum.BAD_REQUEST, getBadParemeterMsg(e));
+    }
+
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public RespDTO<String> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.error("handleHttpRequestMethodNotSupportedException has been invoked", e);
+        return RespDTO.fail(ResponseCodeEnum.HTTP_BAD_METHOD, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
