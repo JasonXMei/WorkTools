@@ -3,10 +3,7 @@ package com.jason;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @Author Jason
@@ -14,6 +11,49 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class ConcurrentTest {
+
+
+    @Test
+    public void completeFutureTest() {
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        long start = System.currentTimeMillis();
+        CompletableFuture<Void> completableFuture1 = CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("completableFuture1 finished");
+        }, executor);
+
+        CompletableFuture<Void> completableFuture2 = CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(500L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("completableFuture2 finished");
+        }, executor);
+
+        CompletableFuture<Void> completableFuture3 = CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("completableFuture3 finished");
+        }, executor);
+
+        try {
+            CompletableFuture.allOf(completableFuture1, completableFuture2, completableFuture3).get();
+            long end = System.currentTimeMillis();
+            System.out.println("completableFuture finished, spend: " + (end - start));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void createThreadFactory() throws InterruptedException {
