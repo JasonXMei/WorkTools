@@ -1,6 +1,6 @@
 package com.jason.interceptor;
 
-import com.google.common.util.concurrent.RateLimiter;
+import org.redisson.api.RRateLimiter;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -12,14 +12,14 @@ import java.nio.charset.StandardCharsets;
  * @Author Jason
  * @Date 2022/11/28
  */
-public class RateLimiterInterceptor extends HandlerInterceptorAdapter {
+public class RedissionRateLimiterInterceptor extends HandlerInterceptorAdapter {
 
-    private final RateLimiter rateLimiter;
+    private final RRateLimiter rateLimiter;
 
     /**
      * 通过构造函数初始化限速器
      */
-    public RateLimiterInterceptor(RateLimiter rateLimiter) {
+    public RedissionRateLimiterInterceptor(RRateLimiter rateLimiter) {
         super();
         this.rateLimiter = rateLimiter;
     }
