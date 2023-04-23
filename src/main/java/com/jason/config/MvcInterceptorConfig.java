@@ -35,7 +35,7 @@ public class MvcInterceptorConfig extends WebMvcConfigurationSupport {
     @Bean
     public RedissionRateLimiterInterceptor redissionRateLimiterInter() {
         RRateLimiter rateLimiter = redissonClient.getRateLimiter("jason");
-        rateLimiter.trySetRate(RateType.PER_CLIENT, 1, 1, RateIntervalUnit.SECONDS);
+        rateLimiter.trySetRate(RateType.PER_CLIENT, 5, 10, RateIntervalUnit.MINUTES);
         return new RedissionRateLimiterInterceptor(rateLimiter);
     }
 
