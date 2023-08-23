@@ -1,4 +1,0 @@
-"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit"
-"com.jason.ObjectMapperTest.globalTest","thrpt",10,5,6099882.453470,1503478.887899,"ops/s"
-"com.jason.ObjectMapperTest.globalTestThreadLocal","thrpt",10,5,6558522.684190,716523.080105,"ops/s"
-"com.jason.ObjectMapperTest.localTest","thrpt",10,5,521832.302660,98395.041501,"ops/s"

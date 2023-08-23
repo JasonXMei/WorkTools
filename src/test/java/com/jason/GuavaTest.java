@@ -25,8 +25,6 @@ public class GuavaTest {
             .expireAfterWrite(30, TimeUnit.MINUTES)
             //配置写入后多久刷新缓存，由于 expireAfterWrite 会导致其他线程阻塞，故该配置使更新线程调用 load 方法更新该缓存，其他请求线程返回该缓存的旧值，解决线程阻塞问题
             .refreshAfterWrite(20, TimeUnit.MINUTES)
-            //key使用弱引用-WeakReference
-            .weakKeys()
             //当Entry被移除时的监听器
             .removalListener(notification -> System.out.println(JSONUtil.toJsonStr(notification)))
             //创建一个CacheLoader，重写load方法，以实现"当get时缓存不存在，则load，放到缓存，并返回"的效果
@@ -34,6 +32,7 @@ public class GuavaTest {
                 //重点，自动写缓存数据的方法，必须要实现
                 @Override
                 public String load(String key) throws Exception {
+                    System.out.println(key);
                     return "value_" + key;
                 }
 
@@ -47,11 +46,10 @@ public class GuavaTest {
 
     @Test
     public void test() throws InterruptedException, ExecutionException {
-        //测试例子，调用其get方法，cache会自动加载并返回
-        String value = loadingCache.get("1");
-        //返回value_1
-        System.out.println(value);
-        Thread.sleep(5000L);
-        System.out.println(loadingCache.get("1"));
+        loadingCache.get("1");
+        loadingCache.get("1");
+        loadingCache.get("1");
+        loadingCache.get("1");
+        loadingCache.get("1");
     }
 }
