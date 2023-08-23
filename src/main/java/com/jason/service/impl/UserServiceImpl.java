@@ -32,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private CredentialService credentialService;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addAge(int userId) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", userId);
@@ -45,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void testTransaction() {
         User user = baseMapper.selectById(1);
         user.setUpdatedAt(Calendar.getInstance().getTime());

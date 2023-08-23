@@ -35,7 +35,6 @@ public class GlobalExceptionHandler {
         return RespDTO.fail(e.getResponseCode(), e.getMessage());
     }
 
-    // @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class, ConstraintViolationException.class})
     @ResponseBody
     public RespDTO<String> handleParameterVerificationException(Exception e) {

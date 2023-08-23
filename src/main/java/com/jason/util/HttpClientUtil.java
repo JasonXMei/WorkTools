@@ -53,7 +53,7 @@ public class HttpClientUtil {
     private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
     public static <P, T> T get(String url, Map<String, String> headers, P p, TypeReference<T> respClazz) {
-        Map<String, String> params = ObjectMapperUtil.obj2Map(p);
+        Map<String, String> params = ObjectUtil.obj2Map(p);
         printRequestMsg(url, headers, params);
 
         HttpGet httpGet = new HttpGet(packageParam(url, params));
@@ -65,7 +65,7 @@ public class HttpClientUtil {
     }
 
     public static <P, T> T postForm(String url, Map<String, String> headers, P p, TypeReference<T> respClazz) {
-        Map<String, String> params = ObjectMapperUtil.obj2Map(p);
+        Map<String, String> params = ObjectUtil.obj2Map(p);
         printRequestMsg(url, headers, params);
 
         HttpPost httpPost = new HttpPost(url);

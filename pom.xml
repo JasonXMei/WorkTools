@@ -106,13 +106,6 @@
             <version>2.7.0</version>
         </dependency>
 
-        <!-- guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>19.0</version>
-        </dependency>
-
         <!-- jmh -->
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
@@ -194,7 +187,6 @@
                 <version>3.21.0</version>
                 <configuration>
                     <skip>false</skip>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                     <targetJdk>${java.version}</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
                     <rulesets>
@@ -210,8 +202,6 @@
                         <ruleset>rulesets/java/ali-set.xml</ruleset>
                     </rulesets>
                     <printFailingErrors>true</printFailingErrors>
-                    <!--扫描级别，小于等于这个级别的错误代码将不通过扫描。不配默认是5（这里不推荐使用默认的，否则任何一个规则校验不通过都不允许提交，推荐配置成1，否则可能会出现经常因不满足规则校验而无法提交的情况->当然也可以重新梳理一下规则配置，自定义本团队的规则级别）-->
-                    <minimumPriority>1</minimumPriority>
                 </configuration>
                 <executions>
                     <execution>
@@ -249,7 +239,7 @@
                         <configuration>
                             <hooks>
                                 <pre-commit>
-                                    mvn clean install -f 40_source//你的项目文件夹//pom.xml
+                                    exec mvn clean pmd:check -f C://Users//abo//Desktop//workspace_idea//WorkTools//pom.xml
                                 </pre-commit>
                             </hooks>
                         </configuration>

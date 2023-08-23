@@ -15,11 +15,28 @@ import java.util.Collection;
  */
 public interface UserService extends IService<User> {
 
+    /**
+     * add age
+     * @param userId
+     */
     void addAge(int userId);
 
+    /**
+     * test mysql transaction
+     */
     void testTransaction();
 
+    /**
+     * exist
+     * @param email
+     * @return
+     */
     boolean existsEmail(String email);
 
+    /**
+     * find by email
+     * @param email
+     * @return
+     */
     Collection<User> findByEmail(String email);
 }

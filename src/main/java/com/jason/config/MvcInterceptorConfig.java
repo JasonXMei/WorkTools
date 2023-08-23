@@ -45,14 +45,9 @@ public class MvcInterceptorConfig extends WebMvcConfigurationSupport {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/error", "/credential/**");
 
-        /**
-         * 1秒钟生成1个令牌，也就是1秒中允许一个人访问
-         */
-//        registry.addInterceptor(new GoogleRateLimiterInterceptor(RateLimiter.create(1, 1, TimeUnit.SECONDS)))
-//                .addPathPatterns("/**");
-
-//        registry.addInterceptor(redisRateLimiterInterceptor())
-//                .addPathPatterns("/**");
+        /// 1秒钟生成1个令牌，也就是1秒中允许一个人访问
+//        registry.addInterceptor(new GoogleRateLimiterInterceptor(RateLimiter.create(1, 1, TimeUnit.SECONDS))).addPathPatterns("/**");
+//        registry.addInterceptor(redisRateLimiterInterceptor()).addPathPatterns("/**");
 
 
         registry.addInterceptor(redissionRateLimiterInter())

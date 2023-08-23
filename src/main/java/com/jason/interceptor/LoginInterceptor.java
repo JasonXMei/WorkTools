@@ -20,6 +20,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        /// ignore auth
 //        String token = request.getHeader(CommonConstant.HEADER_KEY);
 //        if (StrUtil.isEmpty(token)) {
 //            throw new BusinessException(ResponseCodeEnum.UNAUTHORIZED, "header token cannot be blank");
