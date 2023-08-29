@@ -13,9 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>WorkTools</name>
     <description>Demo project for Spring Boot</description>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
         <!-- spring boot -->
@@ -91,7 +88,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.2</version>
+            <version>5.8.21</version>
         </dependency>
 
         <!-- swagger -->
@@ -184,11 +181,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.21.0</version>
+                <version>3.11.0</version>
                 <configuration>
                     <skip>false</skip>
                     <targetJdk>${java.version}</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
+<!--                    <failurePriority>5</failurePriority>-->
                     <rulesets>
                         <ruleset>rulesets/java/ali-comment.xml</ruleset>
                         <ruleset>rulesets/java/ali-concurrent.xml</ruleset>
@@ -201,23 +199,36 @@
                         <ruleset>rulesets/java/ali-other.xml</ruleset>
                         <ruleset>rulesets/java/ali-set.xml</ruleset>
                     </rulesets>
-                    <printFailingErrors>true</printFailingErrors>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>pmd-check-verify</id>
-                        <phase>verify</phase>
+                        <id>pmd</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
+<!--                        <configuration>-->
+<!--                            &lt;!&ndash; 根据Priority单独check，放行Priority为3及以下的规则 &ndash;&gt;-->
+<!--                            <failurePriority>1</failurePriority>-->
+<!--                        </configuration>-->
                     </execution>
-                    <execution>
-                        <id>pmd-pmd-site</id>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>pmd</goal>
-                        </goals>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>pmd-check-verify</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <failurePriority>0</failurePriority>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>pmd-pmd-site</id>-->
+<!--                        <phase>site</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>pmd</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
                 </executions>
                 <dependencies>
                     <dependency>
